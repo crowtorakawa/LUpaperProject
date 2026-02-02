@@ -93,5 +93,5 @@ paperProject/
 │
 ├─attendance_logs/             # 辨識紀錄日誌
 └─migrations/                  # 資料庫遷移紀錄 (Flask-Migrate)
-
+<img width="300" height="300" alt="shot_01" src="https://github.com/crowtorakawa/LUpaperProject/raw/main/index%E7%95%AB%E9%9D%A2" />
 <img src="https://github.com/crowtorakawa/LUpaperProject/raw/main/index%E7%95%AB%E9%9D%A2.jpg" width="800px" alt="主畫面選單">
