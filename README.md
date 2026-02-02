@@ -7,7 +7,7 @@
 本系統之核心演算法源自於作者之學位論文：[可回復式資訊隱藏方法實作](https://ndltd.ncl.edu.tw/cgi-bin/gs32/gsweb.cgi/ccd=HGI.J4/record?r1=1&h1=0)。本次製作之目的是驗證該 RDH 方法之有效性，並將其應用於數位身分憑證之保護。
 
 > [!IMPORTANT]
-> **Current Status**: 系統目前處於 PoC (概念驗證) 階段。
+> **Current Status**: 系統目前處於 概念驗證 階段。
 > **Future Improvements (尚未完善)**：
 > 1. 個別查詢/搜尋功能之整合。
 > 2. 跨環境之可靠度與多人壓力測試。
