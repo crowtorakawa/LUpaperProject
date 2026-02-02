@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('crud.static',filename='style.css') }}"/>
+    <title>使用者列表</title>
+</head>
+ <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, "Microsoft JhengHei", sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+        }
+
+        /* ===== 主容器 ===== */
+        .container {
+            max-width: 800px;
+            margin: 60px auto;
+            text-align: center;
+        }
+
+        /* ===== 標題 ===== */
+        h1 {
+            margin-bottom: 10px;
+            font-size: 32px;
+        }
+
+        .explain {
+            margin-bottom: 40px;
+            color: #666;
+            font-size: 16px;
+        }
+
+        /* ===== 功能選單 ===== */
+        .item {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .item a {
+            width: 180px;
+            padding: 20px 0;
+            text-decoration: none;
+            color: #fff;
+            background-color: #4a90e2;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .item a:hover {
+            background-color: #357abd;
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>圖片資料查詢系統</h1>
+
+        <div class="explain">
+            請選擇你要使用的服務
+        </div>
+
+        <div class="item">
+            <a href="{{ url_for('crud.tasks') }}">新增使用者</a>
+            <a href="{{ url_for('crud.stego_upload') }}">儲存</a>
+            <a href="{{ url_for('crud.stego_upload') }}">查詢</a>
+        </div>
+    </div>
+</body>
+</html>

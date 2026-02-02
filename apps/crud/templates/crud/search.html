@@ -1,0 +1,183 @@
+<style>
+    /* ===== 延用製作頁面風格 ===== */
+    .stego-container {
+        max-width: 1100px;
+        margin: 40px auto;
+        padding: 30px;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+    }
+
+    h3 {
+        font-size: 24px;
+        margin-bottom: 15px;
+        color: #333;
+        font-weight: bold;
+    }
+
+    /* ===== 影像區美化 (左側) ===== */
+    .video-box {
+        position: relative;
+        background: #000;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        min-height: 350px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .video-box img {
+        width: 100%;
+        display: block;
+    }
+
+    /* ===== 狀態提示與結果區 ===== */
+    .status-bar {
+        margin-top: 20px;
+        padding: 15px;
+        border-radius: 8px;
+        font-size: 16px;
+    }
+    .status-success { background-color: #d4edda; border-left: 6px solid #28a745; color: #155724; }
+    .status-fail { background-color: #f8d7da; border-left: 6px solid #dc3545; color: #721c24; }
+
+    /* ===== 右側操作面板 ===== */
+    .control-panel {
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 12px;
+        height: 100%;
+        text-align: left;
+    }
+
+    .identity-card {
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 25px;
+        transition: all 0.3s;
+    }
+    .id-waiting { background-color: #fff3cd; border: 1px solid #ffeeba; color: #856404; }
+    .id-success { background-color: #d4edda; border: 1px solid #c3e6cb; color: #155724; }
+
+    /* ===== 按鈕設計 ===== */
+    .btn-custom {
+        padding: 12px 0;
+        border: none;
+        border-radius: 10px;
+        font-size: 18px;
+        font-weight: bold;
+        color: #fff;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        width: 100%;
+    }
+    .btn-verify { background-color: #17a2b8; }
+    .btn-verify:hover:not(:disabled) { background-color: #138496; transform: translateY(-2px); }
+    .btn-verify:disabled { background-color: #ccc; cursor: not-allowed; }
+
+    .form-control-custom {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        margin-bottom: 15px;
+    }
+</style>
+
+<div class="stego-container">
+    <div class="top-nav" style="display: flex; gap: 10px; margin-bottom: 20px;">
+        <form action="{{ url_for('crud.users') }}">
+            <button type="submit" style="padding: 5px 15px; cursor: pointer;">返回</button>
+        </form>
+        <form action="{{ url_for('crud.sql') }}">
+            <button type="submit" class="view" style="padding: 5px 15px; cursor: pointer;">查看</button>
+        </form>
+    </div>
+
+    <div class="row" style="display: flex; gap: 20px;">
+        <div style="flex: 1;">
+            <div class="mb-3" style="margin-bottom: 15px;">
+                <form method="POST" action="{{ url_for('crud.stego_search_page') }}">
+                    {{ form.csrf_token }}
+                    <button type="submit" name="stop" value="Stop/Start" 
+                            class="btn-custom {{ 'btn-stop' if switch == 1 else 'btn-start' }}">
+                        {{ '停止系統' if switch == 1 else '啟動系統' }}
+                    </button>
+                </form>
+            </div>
+
+            <div class="video-box">
+                {% if switch == 1 %}
+                    <img src="{{ url_for('crud.video_feed') }}?t={{ range(1, 9999) | random }}">
+                {% else %}
+                    <div style="color: #666; text-align: center;">
+                        <i class="bi bi-camera-video-off" style="font-size: 48px;"></i>
+                        <p>攝影機已關閉</p>
+                    </div>
+                {% endif %}
+            </div>
+
+            {% if status %}
+                <div class="status-bar" style="margin-top: 15px; padding: 12px; background-color: #eef4ff; border-left: 6px solid #4a90e2; border-radius: 8px;">
+                    <strong>提示：</strong> {{ status }}
+                </div>
+            {% endif %}
+
+            {% if extracted_info %}
+            <div class="status-bar {{ 'status-success' if '通過' in status_text or '結果' in status_text else 'status-fail' }}" style="margin-top: 15px;">
+                <strong>結果：</strong> {{ status_text }} <br>
+                內容：<strong>{{ extracted_info }}</strong>
+            </div>
+            {% endif %}
+        </div>
+
+        <div style="flex: 1;">
+            <div class="control-panel">
+                <h3><i class="bi bi-person-badge"></i> 第一步：身分比對</h3>
+                <div id="identity-display" class="identity-card id-waiting">
+                    目前狀態：<strong id="current_name">偵測中...</strong>
+                </div>
+
+                <hr>
+
+                <h3><i class="bi bi-search"></i> 第二步：上傳憑證</h3>
+                <form action="{{ url_for('crud.stego_manual_verify') }}" method="POST" enctype="multipart/form-data">
+                    {{ form.csrf_token }}
+                    <input type="hidden" name="detected_username" id="detected_username">
+                    
+                    <label style="display:block; margin-bottom:8px; font-weight:bold; color:#555;">選擇要驗證的影像</label>
+                    <input type="file" name="stego_image" class="form-control-custom" required>
+                    
+                    <button type="submit" id="verify-btn" class="btn-custom btn-primary-custom" disabled>
+                        開始解碼驗證
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 偵測邏輯同步
+    setInterval(function() {
+        fetch('/crud/get_current_name')
+            .then(response => response.json())
+            .then(data => {
+                const name = data.name;
+                document.getElementById('current_name').innerText = name;
+                
+                if (name !== "Unknown" && name !== "偵測中...") {
+                    document.getElementById('detected_username').value = name;
+                    document.getElementById('verify-btn').disabled = false;
+                    document.getElementById('identity-display').className = "identity-card id-success";
+                } else {
+                    document.getElementById('verify-btn').disabled = true;
+                    document.getElementById('identity-display').className = "identity-card id-waiting";
+                }
+            });
+    }, 1000);
+</script>

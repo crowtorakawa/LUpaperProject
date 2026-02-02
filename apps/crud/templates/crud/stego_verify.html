@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5 text-center">
+    <div class="py-5 shadow rounded bg-white">
+        {% if is_valid %}
+            <div class="display-1 text-success mb-4"><i class="bi bi-patch-check-fill"></i></div>
+            <h1 class="text-success font-weight-bold">驗證成功</h1>
+            <p class="lead">此影像中提取的資訊與資料庫記錄完全吻合。</p>
+        {% else %}
+            <div class="display-1 text-danger mb-4"><i class="bi bi-exclamation-triangle-fill"></i></div>
+            <h1 class="text-danger font-weight-bold">驗證失敗</h1>
+            <p class="lead">影像資訊可能已被篡改，或與簽發者不符。</p>
+        {% endif %}
+
+        <div class="mt-4 p-4 bg-light d-inline-block rounded border">
+            <p class="mb-1 text-muted">提取出的憑證內容：</p>
+            <code style="font-size: 1.5rem; color: #333;">{{ extracted_info }}</code>
+        </div>
+
+        <div class="mt-5">
+            <a href="{{ url_for('crud.stego_upload') }}" class="btn btn-primary px-5">回到首頁</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

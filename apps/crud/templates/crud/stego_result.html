@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}數位憑證結果{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow-lg border-0">
+        <div class="card-header bg-success text-white text-center py-4">
+            <h2 class="mb-0">✅ 數位憑證隱寫完成</h2>
+        </div>
+        <div class="card-body p-5">
+            <div class="row">
+                <div class="col-md-6 text-center">
+                    <h5 class="text-muted mb-3">隱寫影像預覽 (Stego Image)</h5>
+                    <div class="img-container mb-3">
+                        <img src="{{ download_url }}" class="img-fluid rounded shadow-sm border" style="max-height: 400px;" alt="Stego Image">
+                    </div>
+                    <a href="{{ download_url }}" class="btn btn-outline-success btn-lg w-100" download>
+                        📥 下載隱寫影像 (.png)
+                    </a>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="info-box bg-light p-4 rounded h-100">
+                        <h4 class="mb-4">憑證詳細資訊</h4>
+                        <ul class="list-group list-group-flush mb-4 bg-transparent">
+                            <li class="list-group-item bg-transparent"><strong>簽發使用者：</strong> {{ username }}</li>
+                            <li class="list-group-item bg-transparent"><strong>嵌入資訊 (Email)：</strong> {{ email }}</li>
+                            <li class="list-group-item bg-transparent"><strong>影像尺寸：</strong> 512 x 512</li>
+                            <li class="list-group-item bg-transparent"><strong>加密矩陣：</strong> 3D-Cube Matrix (AES-Style)</li>
+                        </ul>
+
+                        <div class="verification-zone mt-4">
+                            <h5>驗證系統</h5>
+                            <p class="small text-muted">點擊下方按鈕，系統將從像素中重新計算並提取嵌入的憑證資訊。</p>
+                            <a href="{{ url_for('crud.stego_verify', user_id=user_id) }}" class="btn btn-info text-white w-100 py-3 shadow">
+                                🔍 啟動像素級別驗證
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <hr class="my-5">
+            <div class="text-center">
+                <a href="{{ url_for('crud.stego_upload') }}" class="text-secondary text-decoration-none">
+                    ← 返回重新製作另一張憑證
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<style>
+    .img-container img:hover {
+        transform: scale(1.02);
+        transition: transform 0.3s ease;
+    }
+</style>
+{% endblock %}

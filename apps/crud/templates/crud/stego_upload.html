@@ -1,0 +1,222 @@
+<style>
+    /* ===== 延用你提供的風格 ===== */
+    .stego-container {
+        max-width: 1100px; /* 因為有兩欄，稍微放寬 */
+        margin: 40px auto;
+        padding: 30px;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+    }
+
+    h3 {
+        font-size: 24px;
+        margin-bottom: 15px;
+        color: #333;
+        font-weight: bold;
+    }
+
+    /* ===== 影像區美化 ===== */
+    .video-box {
+        position: relative;
+        background: #000;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        min-height: 300px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .video-box img {
+        width: 100%;
+        display: block;
+    }
+
+    /* ===== 狀態提示列 ===== */
+    .status-bar {
+        margin-top: 20px;
+        padding: 12px;
+        background-color: #eef4ff;
+        border-left: 6px solid #4a90e2;
+        border-radius: 8px;
+        font-size: 16px;
+        color: #357abd;
+    }
+
+    /* ===== 右側操作面板 ===== */
+    .control-panel {
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 12px;
+        height: 100%;
+        text-align: left;
+    }
+
+    .identity-card {
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 25px;
+        transition: all 0.3s;
+    }
+
+    .id-waiting { background-color: #fff3cd; border: 1px solid #ffeeba; color: #856404; }
+    .id-success { background-color: #d4edda; border: 1px solid #c3e6cb; color: #155724; box-shadow: 0 4px 10px rgba(40, 167, 69, 0.2); }
+
+    /* ===== 按鈕設計同步 ===== */
+    .btn-custom {
+        padding: 12px 0;
+        border: none;
+        border-radius: 10px;
+        font-size: 18px;
+        font-weight: bold;
+        color: #fff;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        width: 100%;
+    }
+
+    .btn-start { background-color: #28a745; }
+    .btn-start:hover { background-color: #218838; transform: translateY(-2px); }
+
+    .btn-stop { background-color: #dc3545; }
+    .btn-stop:hover { background-color: #c82333; transform: translateY(-2px); }
+
+    .btn-primary-custom { background-color: #4a90e2; }
+    .btn-primary-custom:hover:not(:disabled) { background-color: #357abd; transform: translateY(-2px); }
+    .btn-primary-custom:disabled { background-color: #ccc; cursor: not-allowed; }
+
+    /* 表單元件 */
+    .form-control-custom {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        margin-bottom: 15px;
+    }
+            /* ===== 上方返回列 ===== */
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+
+        .top-nav form button {
+            padding: 10px 24px;
+            border-radius: 8px;
+            border: none;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            color: #fff;
+            background-color: #4a90e2;
+            transition: 0.3s;
+        }
+
+        .top-nav form button:hover {
+            background-color: #357abd;
+        }
+
+        .top-nav .view {
+            background-color: #28a745;
+        }
+
+        .top-nav .view:hover {
+            background-color: #218838;
+        }
+</style>
+
+<div class="stego-container">
+    <div class="top-nav">
+            <form action="{{ url_for('crud.users') }}">
+                <button type="submit">返回</button>
+            </form>
+
+            <form action="{{ url_for('crud.sql') }}">
+                <button type="submit" class="view">查看</button>
+            </form>
+        </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="mb-3">
+                <form method="POST" action="{{ url_for('crud.stego_upload') }}">
+                    {{ form.csrf_token }}
+                    <button type="submit" name="stop" value="Stop/Start" 
+                            class="btn-custom {{ 'btn-stop' if switch == 1 else 'btn-start' }}">
+                        {{ '系統開關' if switch == 1 else '啟動系統' }}
+                    </button>
+                </form>
+            </div>
+
+            <div class="video-box">
+                {% if switch == 1 %}
+                    <img src="{{ url_for('crud.video_feed') }}?t={{ range(1, 9999) | random }}">
+                {% else %}
+                    <div style="color: #666; text-align: center;">
+                        <i class="bi bi-camera-video-off" style="font-size: 48px;"></i>
+                        <p>攝影機已關閉</p>
+                    </div>
+                {% endif %}
+            </div>
+
+            {% if status %}
+                <div class="status-bar">
+                    <strong>提示：</strong> {{ status }}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="col-md-6">
+            <div class="control-panel">
+                <h3><i class="bi bi-person-badge"></i> 第一步：身分驗證</h3>
+                <div id="identity-display" class="identity-card id-waiting">
+                    目前狀態：<strong id="current_name">偵測中...</strong>
+                </div>
+
+                <hr>
+
+                <h3><i class="bi bi-shield-check"></i> 第二步：隱寫資訊</h3>
+                
+                <form action="{{ url_for('crud.stego_save') }}" method="POST" enctype="multipart/form-data">
+                    {{ form.csrf_token }}
+                    <input type="hidden" name="detected_username" id="detected_username">
+                    
+                    <label style="display:block; margin-bottom:8px; font-weight:bold; color:#555;">上傳原始影像</label>
+                    <input type="file" name="carrier_image" class="form-control-custom" required>
+                    
+                    <button type="submit" id="stego-btn" class="btn-custom btn-primary-custom" disabled>
+                        開始製作數位憑證
+                    </button>
+                </form>
+                
+                <p style="margin-top: 15px; font-size: 14px; color: #888;">
+                    * 系統將會把您的身分資訊加密嵌入影像中。
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    setInterval(function() {
+        fetch('/crud/get_current_name')
+            
+            .then(response => response.json())
+            .then(data => {
+                const name = data.name;
+                document.getElementById('current_name').innerText = name;
+                
+                // 如果辨識到人 (非 Unknown 且攝影機開啟中)
+                if (name !== "Unknown" && name !== "偵測中...") {
+                    document.getElementById('detected_username').value = name;
+                    document.getElementById('stego-btn').disabled = false;
+                    document.getElementById('identity-display').className = "alert alert-success";
+                } else {
+                    document.getElementById('stego-btn').disabled = true;
+                    document.getElementById('identity-display').className = "alert alert-warning";
+                }
+            });
+    }, 1000);
+</script>
