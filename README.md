@@ -1,7 +1,16 @@
 # LUpaperProject
 # 臉部辨識數位憑證隱寫系統 (Biometric Stego-System)
+# Biometric Stego-Certificate System (LUpaperProject)
 
 這是一個結合 **臉部辨識 (Face Recognition)** 與 **可逆影像隱寫術 (Reversible Data Hiding)** 的安全驗證系統。系統透過攝影機辨識使用者身分，並將其憑證加密嵌入影像中。
+製作構想是根據我自己的論文的可回復是資訊隱藏方法並實作出來的系統，請於碩博士論文網上查看方法https://ndltd.ncl.edu.tw/cgi-bin/gs32/gsweb.cgi/ccd=HGI.J4/record?r1=1&h1=0，
+目前還很陽春，本次製作的目的是驗證可回復是資訊隱藏方法並應用於資料隱藏上。
+
+[!IMPORTANT]
+> **Current Status**: 系統目前處於 (概念驗證) 階段。
+> **Future Improvements (尚未完善)**:
+> 1. 個別查詢/搜尋功能之整合。
+> 2. 跨環境之可靠度與多人壓力測試。
 
 ---
 
