@@ -1,4 +1,4 @@
-# 🛡️ Biometric Stego-Certificate System (LUpaperProject)
+# Biometric Stego-Certificate System (LUpaperProject)
 # 臉部辨識數位憑證隱寫系統
 
 這是一個結合 **臉部辨識 (Face Recognition)** 與 **可逆影像隱寫術 (Reversible Data Hiding, RDH)** 的安全驗證系統。系統透過攝影機辨識使用者身分，並將其身分憑證加密嵌入影像中。
@@ -14,7 +14,7 @@
 
 ---
 
-## 🔬 核心技術區塊 (Core Technical Sections)
+## 核心技術區塊 (Core Technical Sections)
 
 ### 1. 資訊隱藏方法 (Reversible Data Hiding Method)
 本系統採用**可回復式資訊隱藏 (RDH)** 技術，確保提取隱藏資訊後，原始載體影像能達成無損還原。
@@ -40,17 +40,17 @@
 整合即時生物辨識及資訊隱藏方法，並利用flask整合
 
 
-## 🚀 核心功能與快速開始
+##  核心功能與快速開始
 * **身分連動製作**：自動鎖定使用者 ID 與 Email，確保憑證真實性。
 * **自動路徑備援**：優先搜尋 `D:\3Dmatrix.npy`，若不存在則自動切換至專案根目錄。
 * **安全性**：強制執行 CSRF 防護與 3D 變換矩陣解密。
 ---
-**⚠️ 測試前置作業**：
+**測試前置作業**：
 啟動測試前，請務必先執行根目錄下的 **`cube_label.exe`**，以生成必要的 3D 加密憑證檔案。
 
 ---
 
-## 📂 專案目錄結構 (Project Structure)
+##  專案目錄結構 (Project Structure)
 ```text
 paperProject/
 │  .env                        # 環境變數設定 (Secret Key 等)
