@@ -28,8 +28,11 @@
 * **身分驗證**: 前端辨識系統整合
 * **資料庫**: SQLAlchemy / SQLite
 
----
+------
 
+開始測試前請先點選，cube_labe.exe，生成3D憑證
+
+------
 ## 📂 專案目錄結構
 ```text
 paperProject/
