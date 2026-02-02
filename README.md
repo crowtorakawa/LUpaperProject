@@ -93,9 +93,9 @@ paperProject/
 │
 ├─attendance_logs/             # 辨識紀錄日誌
 └─migrations/                  # 資料庫遷移紀錄 (Flask-Migrate)
+```
 
 ## 系統畫面
 ![index畫面](index畫面.jpg)
-
 
 
