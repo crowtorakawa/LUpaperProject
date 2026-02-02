@@ -95,7 +95,7 @@ paperProject/
 └─migrations/                  # 資料庫遷移紀錄 (Flask-Migrate)
 
 ## 系統畫面
-<img src="https://raw.githubusercontent.com/crowtorakawa/LUpaperProject/main/index%E7%95%AB%E9%9D%A2.jpg" width="600">
+![index畫面](index畫面.jpg)
 
 
 
